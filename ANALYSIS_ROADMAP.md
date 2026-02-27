@@ -4,24 +4,48 @@
 
 ---
 
-## 1. Data Verification & Cohort Definition
+## Data Verification & Cohort Definition — Results
 
-**Targets**
+### Targets
 
-- [ ] Confirm dataset integrity (≈45k recordings, 12 leads, 10 s each)
-- [ ] Verify sampling rate (e.g., 500 Hz → 5,000 samples/lead)
-- [ ] Confirm one recording per patient (no duplicates)
-- [ ] Validate label mapping for the 4 target diagnoses
-- [ ] Ensure labels align with records (no missing targets)
-- [ ] Determine task type (multiclass vs multilabel)
-- [ ] Compute class counts and imbalance ratios
-- [ ] Identify extreme minority classes
+- [x] Confirm dataset integrity (≈45k recordings, 12 leads, 10 s each)  
+  Dataset contains ~45k recordings. Each recording has 12 leads with consistent length (modal length retained during loading), corresponding to ~10 seconds per recording.
 
-**Outputs**
+- [x] Verify sampling rate (e.g., 500 Hz → 5,000 samples/lead)  
+  Signals have ~5,000 samples per lead, consistent with a 500 Hz sampling rate over ~10 seconds.
 
-- [ ] Table of class frequencies
-- [ ] Basic dataset statistics
-- [ ] Confirmation of usable sample count
+- [~] Confirm one recording per patient (no duplicates)  
+  Patient IDs were not available in the loaded data, so duplicate recordings per patient cannot be ruled out.
+
+- [x] Validate label mapping for the 4 target diagnoses  
+  Labels correspond to the four specified rhythm diagnoses using SNOMED codes:  
+  Atrial Fibrillation, Supraventricular Tachycardia, Sinus Bradycardia, Sinus Rhythm.
+
+- [x] Ensure labels align with records (no missing targets)  
+  Each retained recording has a valid label vector; no missing label entries were observed after loading.
+
+- [x] Determine task type (multiclass vs multilabel)  
+  Labels are encoded as a binary matrix allowing multiple diagnoses per recording.  
+  However, co-occurrence analysis shows minimal overlap, indicating the task behaves nearly as multiclass.
+
+- [x] Compute class counts and imbalance ratios  
+  Class counts were computed from the label matrix; imbalance is present across diagnoses.
+
+- [x] Identify extreme minority classes  
+  No class appears vanishingly rare within this four-diagnosis subset, though frequencies differ substantially.
+
+---
+
+### Outputs
+
+- [x] Table of class frequencies  
+  Produced from label counts per diagnosis.
+
+- [x] Basic dataset statistics  
+  Includes number of recordings, leads, samples per lead, and signal duration.
+
+- [x] Confirmation of usable sample count  
+  Only recordings with the modal signal length were retained, yielding a consistent dataset suitable for downstream analysis.
 
 ---
 
