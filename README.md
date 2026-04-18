@@ -2,6 +2,42 @@
 
 This repository implements a reproducible ablation study for 12-lead ECG classification using MultiROCKET feature extraction. The project investigates how different dimensionality reduction strategies and classifier architectures affect performance on high-dimensional time-series features. Specifically, we compare autoencoder-based compression and structured pooling, paired with either a multi-layer perceptron (MLP) or an FT-Transformer, under a controlled 2×2 experimental design.
 
+## Project Overview
+
+We perform classification on the Chapman–Shaoxing 12-lead ECG dataset, focusing on four diagnostic classes:
+
+- AF (Atrial Fibrillation)
+- SVT (Supraventricular Tachycardia)
+- Sinus Bradycardia
+- Sinus Rhythm
+
+All experiments share a common upstream pipeline:
+
+raw ECG → MultiROCKET feature extraction → feature scaling → dimensionality reduction → classifier
+
+This design isolates the impact of downstream modeling choices by keeping feature extraction fixed across all experiments.
+
+## Experimental Design
+
+The study follows a fully crossed 2×2 ablation over two independent components:
+
+**Dimensionality Reduction**
+- Autoencoder (nonlinear compression)
+- Structured Pooling (deterministic aggregation of feature groups)
+
+**Classifier**
+- MLP (shallow multi-layer perceptron)
+- FT-Transformer (feature tokenizer + transformer)
+
+This results in four experimental conditions:
+
+- A1: Autoencoder + MLP  
+- A2: Autoencoder + FT-Transformer  
+- B1: Structured Pooling + MLP  
+- B2: Structured Pooling + FT-Transformer  
+
+All conditions use identical data splits and MultiROCKET features, ensuring fair comparison.
+
 **Collaborative project** — this repo is set up for 3 people. Use Poetry for a consistent environment; reports are gitignored (share via your preferred channel). Track progress with **[ANALYSIS_ROADMAP.md](ANALYSIS_ROADMAP.md)** (2×2 ablation checklist).
 
 ## Setup (Poetry)
