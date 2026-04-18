@@ -6,10 +6,10 @@ This repository implements a reproducible ablation study for 12-lead ECG classif
 
 We perform classification on the Chapman–Shaoxing 12-lead ECG dataset, focusing on four diagnostic classes:
 
-- AF (Atrial Fibrillation)
-- SVT (Supraventricular Tachycardia)
-- Sinus Bradycardia
-- Sinus Rhythm
+- **AF** (Atrial Fibrillation)
+- **SVT** (Supraventricular Tachycardia)
+- **Sinus Brady** (Sinus Bradycardia)
+- **Sinus Rhythm** (Sinus Rhythm (+ Sinus Irregularity))
 
 All experiments share a common upstream pipeline:
 
@@ -38,7 +38,14 @@ This results in four experimental conditions:
 
 All conditions use identical data splits and MultiROCKET features, ensuring fair comparison.
 
-**Collaborative project** — this repo is set up for 3 people. Use Poetry for a consistent environment; reports are gitignored (share via your preferred channel). Track progress with **[ANALYSIS_ROADMAP.md](ANALYSIS_ROADMAP.md)** (2×2 ablation checklist).
+
+## Repository Structure
+data/ # Raw and processed ECG data
+experiments/ # Experiment configs (A1, A2, B1, B2)
+notebooks/ # Exploratory and analysis notebooks
+scripts/ # Utility scripts (data prep)
+src/ # Core pipeline code (models, training, reduction)
+
 
 ## Setup (Poetry)
 
@@ -125,3 +132,5 @@ Then restart the notebook kernel and re-run. (Requires Python 3.11+ for scikit-l
 ## Reports
 
 The `reports/` directory is in `.gitignore`. Share proposal, preliminary, and final reports (e.g. `reports/proposal/`, `reports/preliminary/`, `reports/final/`) via your team’s chosen channel (Drive, OneDrive, etc.).
+
+**Collaborative project** — this repo is set up for 3 people. Use Poetry for a consistent environment; reports are gitignored (share via your preferred channel). Track progress with **[ANALYSIS_ROADMAP.md](ANALYSIS_ROADMAP.md)** (2×2 ablation checklist).
