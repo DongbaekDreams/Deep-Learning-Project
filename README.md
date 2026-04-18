@@ -116,6 +116,8 @@ The script will fail at `load_raw_dataset()` until you implement it. Artifacts (
 5. **04_structured_pooling.ipynb** – Structured pooling reduction.
 6. **05_mlp_models.ipynb** – MLP classifier training/evaluation.
 7. **06_ft_transformer.ipynb** – FT-Transformer training/evaluation.
+8. **07_results_report.ipynb** - Aggregate and report all experiment results.
+9. **08_convtran_amp.ipynb** - Experiment with ConvTran model and reduced features (pre-pooled and autoencoder)
 
 Notebooks import from `src`; keep core logic in `src/` and use notebooks for exploration and visualization. Use the same Poetry environment for Jupyter (`poetry run jupyter notebook` or select the Poetry venv as the kernel).
 
@@ -129,8 +131,5 @@ poetry run pip install --force-reinstall scikit-learn
 
 Then restart the notebook kernel and re-run. (Requires Python 3.11+ for scikit-learn 1.8.)
 
-## Reports
-
-The `reports/` directory is in `.gitignore`. Share proposal, preliminary, and final reports (e.g. `reports/proposal/`, `reports/preliminary/`, `reports/final/`) via your team’s chosen channel (Drive, OneDrive, etc.).
 
 **Collaborative project** — this repo is set up for 3 people. Use Poetry for a consistent environment; reports are gitignored (share via your preferred channel). Track progress with **[ANALYSIS_ROADMAP.md](ANALYSIS_ROADMAP.md)** (2×2 ablation checklist).
