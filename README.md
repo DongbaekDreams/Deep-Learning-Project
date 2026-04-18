@@ -1,6 +1,6 @@
 # MultiROCKET ECG Classification Ablation Study
 
-Reproducible notebook-driven ablation study comparing autoencoder vs structured pooling reduction, and MLP vs FT-Transformer classifiers on MultiROCKET-extracted ECG features.
+This repository implements a reproducible ablation study for 12-lead ECG classification using MultiROCKET feature extraction. The project investigates how different dimensionality reduction strategies and classifier architectures affect performance on high-dimensional time-series features. Specifically, we compare autoencoder-based compression and structured pooling, paired with either a multi-layer perceptron (MLP) or an FT-Transformer, under a controlled 2×2 experimental design.
 
 **Collaborative project** — this repo is set up for 3 people. Use Poetry for a consistent environment; reports are gitignored (share via your preferred channel). Track progress with **[ANALYSIS_ROADMAP.md](ANALYSIS_ROADMAP.md)** (2×2 ablation checklist).
 
