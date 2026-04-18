@@ -40,6 +40,8 @@ from src.utils.paths import (
 )
 from src.utils.seed import SEED, set_global_seed
 
+from src.training.weighted_ce import make_weighted_ce_loss
+
 logger = logging.getLogger(__name__)
 
 
@@ -148,6 +150,7 @@ def run(
         red_test_path = get_reduced_dir() / "autoencoder" / "test.npy"
         ensure_dir(red_train_path.parent)
         device = _get_device(cfg)
+
         if ae_path.exists():
             encoder = load_encoder_for_inference(ae_path, n_features, ae_hidden, latent_dim, device=device)
             encoder = encoder.to(device)
@@ -204,6 +207,16 @@ def run(
     use_early_stopping = get_nested(cfg, "train.early_stopping", False)
     early_patience = get_nested(cfg, "train.early_stopping_patience", 5)
 
+    criterion = None
+    if task_type == "multiclass":
+        criterion = make_weighted_ce_loss(
+            y_train=y_train,
+            num_classes=num_classes,
+            svt_class_index=get_nested(cfg, "train.svt_class_index", None),
+            svt_multiplier=get_nested(cfg, "train.svt_multiplier", 1.25),
+            device=device,
+        )
+
     if classifier_type == "mlp":
         model = MLPClassifier(
             input_dim=input_dim_clf,
@@ -257,7 +270,11 @@ def run(
                 loss = torch.nn.functional.binary_cross_entropy_with_logits(logits, by)
             else:
                 logits = model(bx)
-                loss = torch.nn.functional.cross_entropy(logits, by)
+                #loss = torch.nn.functional.cross_entropy(logits, by)
+
+                # Weighted cross entropy loss
+                loss = criterion(logits, by)
+
             opt.zero_grad()
             loss.backward()
             opt.step()
