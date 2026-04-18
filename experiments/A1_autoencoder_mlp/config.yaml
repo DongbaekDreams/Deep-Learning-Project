@@ -48,3 +48,5 @@ train:
   device: auto
   early_stopping: false
   early_stopping_patience: 5
+  svt_class_index: 1
+  svt_multiplier: 1.25
