@@ -53,17 +53,17 @@
 
 **Targets**
 
-- [ ] Create stratified 60 / 20 / 20 split
-- [ ] Use fixed random seed
+- [x] Create stratified 60 / 20 / 20 split
+- [x] Use fixed random seed
 - [ ] Ensure label distribution consistency across splits
 - [ ] Prevent leakage (no overlap)
 - [ ] Serialize split indices once
 
 **Outputs**
 
-- [ ] Saved split indices
+- [x] Saved split indices
 - [ ] Distribution comparison table across splits
-- [ ] Reproducible partition for all experiments
+- [x] Reproducible partition for all experiments
 
 ---
 
@@ -71,13 +71,13 @@
 
 **Targets**
 
-- [ ] Configure MultiROCKET with fixed seed
-- [ ] Choose kernel count (e.g., K = 2048 → ~16,384 features)
-- [ ] Fit on training data only
+- [x] Configure MultiROCKET with fixed seed
+- [x] Choose kernel count (e.g., K = 2048 → ~16,384 features)
+- [x] Fit on training data only
 - [ ] Transform train/val/test identically
 - [ ] Process in mini-batches to avoid RAM overflow
 - [ ] Store features as float32 disk-backed arrays
-- [ ] Persist fitted transformer
+- [] Persist fitted transformer
 
 **Validation Checks**
 
