@@ -8,5 +8,7 @@ tqdm
 matplotlib
 jupyter
 imbalanced-learn
+wfdb
+numba
 # optional: uncomment for MultiROCKET via sktime
 # sktime
