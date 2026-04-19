@@ -40,7 +40,11 @@ from src.utils.paths import (
 )
 from src.utils.seed import SEED, set_global_seed
 
-from src.training.weighted_ce import make_weighted_ce_loss
+# Option 1: weighted cross-entropy
+# from src.training.weighted_ce import make_weighted_ce_loss
+
+# Option 2: class-balanced focal loss
+from src.training.class_balanced_focal import make_cb_focal_loss
 
 logger = logging.getLogger(__name__)
 
@@ -208,12 +212,27 @@ def run(
     early_patience = get_nested(cfg, "train.early_stopping_patience", 5)
 
     criterion = None
+
+    # Option 1: Weighted cross entropy
+    
+    #if task_type == "multiclass":
+    #    criterion = make_weighted_ce_loss(
+    #        y_train=y_train,
+    #        num_classes=num_classes,
+    #        svt_class_index=get_nested(cfg, "train.svt_class_index", None),
+    #        svt_multiplier=get_nested(cfg, "train.svt_multiplier", 1.25),
+    #        device=device,
+    #    )
+
+    # Option 2: Class-balanced focal loss
     if task_type == "multiclass":
-        criterion = make_weighted_ce_loss(
+        criterion = make_cb_focal_loss(
             y_train=y_train,
             num_classes=num_classes,
+            beta=get_nested(cfg, "train.cb_beta", 0.999),
+            gamma=get_nested(cfg, "train.focal_gamma", 2.0),
             svt_class_index=get_nested(cfg, "train.svt_class_index", None),
-            svt_multiplier=get_nested(cfg, "train.svt_multiplier", 1.25),
+            svt_multiplier=get_nested(cfg, "train.svt_multiplier", 1.0),
             device=device,
         )
 
@@ -272,7 +291,8 @@ def run(
                 logits = model(bx)
                 #loss = torch.nn.functional.cross_entropy(logits, by)
 
-                # Weighted cross entropy loss
+                # Option 1: Weighted cross entropy loss
+                # Option 2: Class-balanced focal loss <-- current
                 loss = criterion(logits, by)
 
             opt.zero_grad()
