@@ -7,5 +7,6 @@ torch
 tqdm
 matplotlib
 jupyter
+imbalanced-learn
 # optional: uncomment for MultiROCKET via sktime
 # sktime
