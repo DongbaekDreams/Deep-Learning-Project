@@ -50,3 +50,7 @@ train:
   early_stopping_patience: 5
   svt_class_index: 1
   svt_multiplier: 1.5
+  use_smoteenn: true
+  smoteenn:
+    random_state: 42
+    sampling_strategy: "not majority"
