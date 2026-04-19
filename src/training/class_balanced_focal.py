@@ -1,5 +1,6 @@
 '''
 References:
+
 1. Cui, Y., Jia, M., Lin, T.-Y., Song, Y., & Belongie, S. (2019). Class-balanced loss based on effective number of samples. 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 9268–9277. https://doi.org/10.1109/cvpr.2019.00949
 2. Lin, T.-Y., Goyal, P., Girshick, R., He, K., & Dollár, P. (2018). Focal loss for dense object detection. arXiv. https://arxiv.org/abs/1708.02002
 '''
