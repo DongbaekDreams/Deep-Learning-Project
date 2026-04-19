@@ -46,6 +46,9 @@ from src.utils.seed import SEED, set_global_seed
 # Option 2: class-balanced focal loss
 from src.training.class_balanced_focal import make_cb_focal_loss
 
+# Option 3: SMOTEENN
+from src.data.smoteenn_resampling import apply_smoteenn_to_reduced_features
+
 logger = logging.getLogger(__name__)
 
 
@@ -200,6 +203,27 @@ def run(
         np.save(red_test_path, X_test_clf.astype(np.float32))
         input_dim_clf = X_train_clf.shape[1]
         logger.info("Pooled features: train %s test %s dim %s", X_train_clf.shape, X_test_clf.shape, input_dim_clf)
+
+    # Option 3: SMOTEENN on reduced training features only
+    #use_smoteenn = get_nested(cfg, "train.use_smoteenn", False)
+    #if use_smoteenn and task_type == "multiclass":
+    #    logger.info("Applying SMOTEENN to reduced training features")
+    #    X_train_clf, y_train = apply_smoteenn_to_reduced_features(
+    #        X_train_clf,
+    #        y_train,
+    #        random_state=get_nested(cfg, "train.smoteenn.random_state", seed),
+    #        sampling_strategy=get_nested(
+    #            cfg,
+    #            "train.smoteenn.sampling_strategy",
+    #            "not majority",
+    #        ),
+    #    )
+    #    input_dim_clf = X_train_clf.shape[1]
+    #    logger.info(
+    #        "After SMOTEENN: X_train_clf %s | y_train %s",
+    #        X_train_clf.shape,
+    #        y_train.shape,
+    #    )
 
     # --- Classifier ---
     classifier_type = get_nested(cfg, "classifier.type", "mlp")
