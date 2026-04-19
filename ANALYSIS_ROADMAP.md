@@ -63,7 +63,7 @@
 
 - [x] Saved split indices
 - [ ] Distribution comparison table across splits
-- [x] Reproducible partition for all experiments
+- [] Reproducible partition for all experiments
 
 ---
 
