@@ -59,8 +59,7 @@ notebooks/ # Exploratory and analysis notebooks
 scripts/ # Utility scripts (data prep)
 src/ # Core pipeline code (models, training, reduction)
 
-The folder structure in experiments is of the form for example:
-A1_autoencoder_SMOTEENN_super. The first part is the experiment dimensionality reduction and classifier followed by classifier name followed by the class imbalancing method.
+The folder structure in experiments is of the form for example: **A1_autoencoder_SMOTEENN_super**. The first part is the experiment dimensionality reduction and classifier followed by classifier name followed by the class imbalancing method. These folder will have to be created when running the 09_super_model_evaluation.ipynb notebook.
 
 ## Raw Data
 
@@ -75,29 +74,6 @@ Do **not** commit large raw data files. Implement the dataset loader in one plac
 - **`src/data/io.py`** → `load_raw_dataset()`  
   Replace the placeholder (which raises `NotImplementedError`) with your logic to load ECG time series and labels. The docstring in that function describes the expected return format.
 
-## Running an Experiment
-
-Each ablation condition has a YAML config under `experiments/`:
-
-- **A1**: autoencoder + MLP  
-- **A2**: autoencoder + FT-Transformer  
-- **B1**: structured pooling + MLP  
-- **B2**: structured pooling + FT-Transformer  
-
-Run training (full pipeline: features → reduction → classifier). From the project root, with the Poetry env active:
-
-```bash
-python -m src.training.train --config experiments/A1_autoencoder_mlp/config.yaml
-```
-
-Other examples:
-
-```bash
-python -m src.training.train --config experiments/B1_pooling_mlp/config.yaml
-python -m src.training.train --config experiments/B2_pooling_ft/config.yaml
-```
-
-The script will fail at `load_raw_dataset()` until you implement it. Artifacts (splits, MultiROCKET transformer, scaler, memmaps, checkpoints, metrics, confusion matrices) are written under `experiments/<condition>/` and shared model dirs under `models/`.
 
 ## Notebook Workflow
 
