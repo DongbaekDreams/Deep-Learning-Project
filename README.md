@@ -19,7 +19,7 @@ This design isolates the impact of downstream modeling choices by keeping featur
 
 ## Experimental Design
 
-The study follows a fully crossed 2×2 ablation over two independent components:
+The study follows a fully crossed 2×3 ablation over two independent components:
 
 **Dimensionality Reduction**
 - Autoencoder (nonlinear compression)
@@ -28,47 +28,38 @@ The study follows a fully crossed 2×2 ablation over two independent components:
 **Classifier**
 - MLP (shallow multi-layer perceptron)
 - FT-Transformer (feature tokenizer + transformer)
+- ConvTran (Position Encoding + Transformer)
 
-This results in four experimental conditions:
+This results in four basic experimental conditions:
 
 - A1: Autoencoder + MLP  
-- A2: Autoencoder + FT-Transformer  
+- A2: Autoencoder + FT-Transformer
+- A3: Autoencoder + ConvTran 
 - B1: Structured Pooling + MLP  
-- B2: Structured Pooling + FT-Transformer  
+- B2: Structured Pooling + FT-Transformer
+- B3: Structured Pooling + ConvTran
+
+**Class Imbalancing Methods**
+
+To accomodate the undersampled class of SVT, several class imbalancing methods were also applied like;
+- None
+- WeightedCE
+- Focal Loss
+- SMOTEENN
+
+Considering every Dimensionality Reduction methods + Classifier + Class Imbalancing Method leaves with a total of 2 x 3 x 4 experiments (24)
 
 All conditions use identical data splits and MultiROCKET features, ensuring fair comparison.
 
 
 ## Repository Structure
 data/ # Raw and processed ECG data
-experiments/ # Experiment configs (A1, A2, B1, B2)
+experiments/ # Experiment configs (A1, A2, A3, B1, B2, B3 )
 notebooks/ # Exploratory and analysis notebooks
 scripts/ # Utility scripts (data prep)
 src/ # Core pipeline code (models, training, reduction)
 
-
-## Setup (Poetry)
-
-Install [Poetry](https://python-poetry.org/docs/#installation), then from the project root:
-
-```bash
-poetry install
-poetry shell
-```
-
-To add the optional MultiROCKET backend (sktime):
-
-```bash
-poetry add sktime
-# or: poetry install --extras sktime  (if sktime is listed under [tool.poetry.extras])
-```
-
-**Without Poetry:** export a lockfile-based requirements file and use pip:
-
-```bash
-poetry export -f requirements.txt --without-hashes -o requirements.txt
-pip install -r requirements.txt
-```
+The folder structure in experiments is of the form for example: **A1_autoencoder_SMOTEENN_super**. The first part is the experiment dimensionality reduction and classifier followed by classifier name followed by the class imbalancing method. These folder will have to be created when running the 09_super_model_evaluation.ipynb notebook.
 
 ## Raw Data
 
@@ -83,29 +74,6 @@ Do **not** commit large raw data files. Implement the dataset loader in one plac
 - **`src/data/io.py`** → `load_raw_dataset()`  
   Replace the placeholder (which raises `NotImplementedError`) with your logic to load ECG time series and labels. The docstring in that function describes the expected return format.
 
-## Running an Experiment
-
-Each ablation condition has a YAML config under `experiments/`:
-
-- **A1**: autoencoder + MLP  
-- **A2**: autoencoder + FT-Transformer  
-- **B1**: structured pooling + MLP  
-- **B2**: structured pooling + FT-Transformer  
-
-Run training (full pipeline: features → reduction → classifier). From the project root, with the Poetry env active:
-
-```bash
-python -m src.training.train --config experiments/A1_autoencoder_mlp/config.yaml
-```
-
-Other examples:
-
-```bash
-python -m src.training.train --config experiments/B1_pooling_mlp/config.yaml
-python -m src.training.train --config experiments/B2_pooling_ft/config.yaml
-```
-
-The script will fail at `load_raw_dataset()` until you implement it. Artifacts (splits, MultiROCKET transformer, scaler, memmaps, checkpoints, metrics, confusion matrices) are written under `experiments/<condition>/` and shared model dirs under `models/`.
 
 ## Notebook Workflow
 
@@ -118,6 +86,11 @@ The script will fail at `load_raw_dataset()` until you implement it. Artifacts (
 7. **06_ft_transformer.ipynb** – FT-Transformer training/evaluation.
 8. **07_results_report.ipynb** - Aggregate and report all experiment results.
 9. **08_convtran_amp.ipynb** - Experiment with ConvTran model and reduced features (pre-pooled and autoencoder)
+10. **09_super_model_evaluation.ipynb** - Compilation of all above experiment in one super notebook that also creates initial comparison tables
+11. **12_a1_curves.ipynb** - Experiments ran on A1 configuration to get training plots
+12. **13_a1_per_class_curves.ipynb** - Experiments ran on A1 configuration to get training plots per class.
+13. **pureconvtran-1sec.ipynb** - ConvTran ran on raw data, but the training data time series is all trimmed down to 1 second for computational convenience
+14. **pureconvtran-1sec.ipynb** - ConvTran ran on raw data, but the training data time series is all trimmed down to 2.5 seconds for computational convenience
 
 Notebooks import from `src`; keep core logic in `src/` and use notebooks for exploration and visualization. Use the same Poetry environment for Jupyter (`poetry run jupyter notebook` or select the Poetry venv as the kernel).
 
